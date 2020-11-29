@@ -15,7 +15,7 @@ pygame.font.init()
 lives_img = pygame.image.load(r'../others/heart.png')
 start_img = pygame.image.load(r'../others/fight.png')
 bg = pygame.image.load(os.path.join('../bg', 'bg.jpg'))
-text_font = pygame.font.SysFont(r'C:\Users\timing\AppData\Local\Microsoft\Windows\Fonts\DINCond-BlackAlternate.otf', 48)
+text_font = pygame.font.SysFont(r'../Fonts/DINCond-BlackExpert.otf', 48)
 diamond = pygame.transform.scale(pygame.image.load(r'../icons/coin.png'), (64, 64))
 verticalMenu = pygame.transform.scale(pygame.image.load(r'../bg/verticalMenu.png'), (150, 500))
 
@@ -86,7 +86,7 @@ class Game:
         self.current_wave = waves[self.wave][:]
         self.pause = False
         self.playPauseButton = PlayPauseButton(play_btn, pause_btn, 20, self.height - 85)
-        self.font = pygame.font.SysFont(r'C:\Users\timing\AppData\Local\Microsoft\Windows\Fonts\DINCond-BlackAlternate.otf', 30)
+        self.font = pygame.font.SysFont(r'../Fonts/DINCond-BlackExpert.otf', 30)
         self.path = []
         # self.clicks = []
 

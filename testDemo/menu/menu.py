@@ -74,7 +74,7 @@ class Menu:
         self.buttons = []
         self.items = 0
         self.menu_bg = menu_bg
-        self.font = pygame.font.SysFont(r'C:\Users\timing\AppData\Local\Microsoft\Windows\Fonts\DINCond-BlackAlternate.otf', 30)
+        self.font = pygame.font.SysFont(r'../Fonts/DINCond-BlackExpert.otf', 30)
         self.tower = tower
 
     def click(self, x, y):
