@@ -37,7 +37,7 @@ class RangeTower(Tower):
                 effected.append(tower)
 
         for tower in effected:
-            tower.range = tower.range + round(tower.range * self.effect[self.level - 1])
+            tower.range = tower.range + int(round(tower.range * self.effect[self.level - 1]))
         pass
 
 damage_imgs = [pygame.transform.scale((pygame.image.load(r'../towers/04.png')),(100,100))]
