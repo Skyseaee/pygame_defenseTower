@@ -5,6 +5,11 @@ from menu.menu import Menu
 menu_bg = pygame.transform.scale(pygame.image.load(r'../bg/menu.png'), (128, 128))
 upgrade_button = pygame.transform.scale(pygame.image.load(r'../icons/tools.png'), (64, 64))
 
+path = [
+    (153, 9), (685, 201), (739, 279), (704, 373), (625, 414), (549, 406), (497, 364), (438, 287), (339, 253),
+    (238, 256), (170, 284), (118, 345), (94, 495), (169, 630), (320, 702), (330, 740)
+]
+
 class Tower:
     '''
     abstract class for towers
@@ -43,7 +48,7 @@ class Tower:
     def draw_radius(self, win):
         # draw range circle
         if self.selected:
-            print(self.range*4, self.range*4)
+            # print(self.range*4, self.range*4)
             circle_surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
             # circle_surface.set_alpha(128)
             # circle_surface.fill(0,255,0))
@@ -116,3 +121,37 @@ class Tower:
             return False
         else:
             return True
+
+    def occupyTheRoad(self):
+        '''
+        for each two node points in path
+        judge whether the position where tower to be constructed
+        is in a range of t that might occupy the road for monsters
+        :param self: tower object
+        :param path: path node list
+        :param t: range that a tower cant be constructed this amount away from the path of monsters
+        :return: true or false
+        '''
+        t = 50
+        for nodeIndex in range(len(path) - 1):
+            x1 = path[nodeIndex][0]
+            y1 = path[nodeIndex][1]
+
+            x2 = path[nodeIndex + 1][0]
+            y2 = path[nodeIndex + 1][1]
+            # the line where the segment from is Ax+By+C=0
+            # B=1
+            A = -((y2 - y1) / (x2 - x1))
+            C = x1 * ((y2 - y1) / (x2 - x1)) - y1
+
+            disToSegment = abs(A * self.x + self.y + C) / math.sqrt(A ** 2 + 1)
+
+            disToNodePoint1 = math.sqrt((self.x - x1) ** 2 + (self.y - y1) ** 2)
+            disToNodePoint2 = math.sqrt((self.x-x2) ** 2 + (self.y - y2) ** 2)
+
+            maxDis_NotToIgnore = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + t ** 2)
+
+            if disToSegment < t and disToNodePoint1 <= maxDis_NotToIgnore and disToNodePoint2 <= maxDis_NotToIgnore:
+                return True
+
+        return False

@@ -1,19 +1,11 @@
 import math
 import pygame
 path = [
-    (-5, 20),
-    (20, 20),
-    (40, 99),
-    (49, 389),
-    (158, 475),
-    (463, 568),
-    (768, 490),
-    (1066, 512),
-    (1100, 512)
+    (153, 9), (685, 201), (739, 279), (704, 373), (625, 414), (549, 406), (497, 364), (438, 287), (339, 253),
+    (238, 256), (170, 284), (118, 345), (94, 495), (169, 630), (320, 702), (330, 740)
 ]
 
 class Enemy:
-
     def __init__(self):
         self.width = 38
         self.height = 38
@@ -21,7 +13,7 @@ class Enemy:
         self.animation_count = 0
         self.health = 1
         self.vel = 3
-        self.path = path
+        self.path = path[:]
         self.x = self.path[0][0]
         self.y = self.path[0][1]
         self.path_pos = 0
@@ -58,7 +50,7 @@ class Enemy:
 
         x1, y1 = self.path[self.path_pos]
         if self.path_pos+1 >= len(self.path):
-            x2, y2 = (1100, 760)
+            x2, y2 = (720, 740)
         else:
             x2, y2 = self.path[self.path_pos+1]
 
@@ -71,30 +63,16 @@ class Enemy:
                 self.imgs[x] = pygame.transform.flip(img, self.flapped, False)
 
         move_x, move_y = ((self.x + dirn[0]), (self.y+dirn[1]))
-        self.dis += math.sqrt((move_x - x1) ** 2 + (move_y - y1) ** 2)
+        # self.dis += math.sqrt((move_x - x1) ** 2 + (move_y - y1) ** 2)
 
         self.x = move_x
         self.y = move_y
+        self.dis = math.sqrt((self.x - x1)**2 + (self.y - y1)**2)
 
         # go to next point
-        if dirn[0] >= 0:
-            if dirn[1] >= 0:
-                if self.x >= x2 and self.y >= y2:
-                    self.dis = 0
-                    self.path_pos += 1
-            else:
-                if self.x >= x1 and self.y <= y2:
-                    self.dis = 0
-                    self.path_pos += 1
-        else:
-            if dirn[1] <= 0:
-                if self.x <= x2 and self.y >= y2:
-                    self.dis = 0
-                    self.path_pos += 1
-            else:
-                if self.x <= x1 and self.y >= y2:
-                    self.dis = 0
-                    self.path_pos += 1
+        if self.dis >= move_dis*2:
+            self.dis = 0
+            self.path_pos += 1
         pass
 
     def health_bar_cul(self, win):

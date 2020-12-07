@@ -9,12 +9,18 @@ from enemy.Club import Club
 from towers.supportTower import DamageTower
 from towers.supportTower import RangeTower
 from menu.menu import VerticalMenu, PlayPauseButton
+from menu.Rank import rank
 pygame.init()
 pygame.font.init()
 
 lives_img = pygame.image.load(r'../others/heart.png')
 start_img = pygame.image.load(r'../others/fight.png')
-bg = pygame.image.load(os.path.join('../bg', 'bg.jpg'))
+# bgs = []
+# indexs2 = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09',
+#           '10', '11', '12', '13', '14', '15']
+# for i in indexs2:
+#     bgs.append(pygame.transform.scale(pygame.image.load(r'../渲染/background00' + i + '.jpg'), (1080, 720)))
+bg = pygame.image.load(os.path.join('../渲染', 'background_new0009.jpg'))
 text_font = pygame.font.SysFont(r'../Fonts/DINCond-BlackExpert.otf', 48)
 diamond = pygame.transform.scale(pygame.image.load(r'../icons/coin.png'), (64, 64))
 verticalMenu = pygame.transform.scale(pygame.image.load(r'../bg/verticalMenu.png'), (150, 500))
@@ -49,17 +55,6 @@ waves = [
     [200, 100],
 ]
 
-path = [
-    (-5, 20),
-    (20, 20),
-    (40, 99),
-    (49, 389),
-    (158, 475),
-    (463, 568),
-    (768, 490),
-    (1066, 512),
-    (1100, 512)
-]
 class Game:
     def __init__(self):
         self.width = 1080
@@ -71,8 +66,11 @@ class Game:
         self.lives = 10
         # self.towers = 10
         self.money = 5000
+        self.score = 0
+        self.rank = rank()
         self.bg = bg
         self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
+        self.bg_index = 0
         self.timer = time.time()
         self.selected_tower = None
         self.menu = VerticalMenu(self.width, 0, verticalMenu)
@@ -106,7 +104,6 @@ class Game:
         else:
             wave_enemies = [Scorpion(), Club()]
             for x in range(len(self.current_wave)):
-                # print(len(self.current_wave))
                 if self.current_wave[x] != 0:
                     self.enemys.append(wave_enemies[x])
                     self.current_wave[x] = self.current_wave[x] - 1
@@ -116,7 +113,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(60)
+            clock.tick(30)
 
             if self.pause == False:
                 # generate monstors
@@ -131,7 +128,7 @@ class Game:
                 tower_list = self.towers[:] + self.support_tower[:]
                 collide = False
                 for tower in tower_list:
-                    if tower.collide(self.moving_object):
+                    if tower.collide(self.moving_object) or self.moving_object.occupyTheRoad():
                         collide = True
                         tower.place_color = (232, 131, 152, 100)
                         self.moving_object.place_color = (232, 131, 152, 150)
@@ -139,7 +136,6 @@ class Game:
                         tower.place_color = (36, 120, 132, 100)
                         if not collide:
                             self.moving_object.place_color = (36, 120, 132, 100)
-            #     tower_
 
             # main event loop
             for event in pygame.event.get():
@@ -153,10 +149,10 @@ class Game:
                         not_allowed = False
                         tower_list = self.towers[:] + self.support_tower[:]
                         for tower in tower_list:
-                            if tower.collide(self.moving_object):
+                            if tower.collide(self.moving_object) or self.moving_object.occupyTheRoad():
                                 not_allowed = True
 
-                        if not not_allowed and self.perp_bisector_dis(self.moving_object):
+                        if not not_allowed:
                             if self.moving_object.name in attack_tower_names:
                                 self.towers.append(self.moving_object)
                             elif self.moving_object.name in support_tower_names:
@@ -178,7 +174,6 @@ class Game:
                             if self.money >= cost:
                                 self.money -= cost
                                 self.add_tower(side_menu_button)
-
                             # print(side_menu_button)
 
                         # check if clicked on the attack tower or support tower
@@ -215,7 +210,7 @@ class Game:
                 to_del = []
                 for en in self.enemys:
                     en.move()
-                    if en.x > 1080:
+                    if en.y > 720:
                         to_del.append(en)
                 # delete all enemies off the screen
                 for d in to_del:
@@ -226,8 +221,11 @@ class Game:
                 for tw in self.towers:
                     # tw.attack(self.enemys)
                     self.money += tw.attack(self.enemys)
+                    self.score += tw.attack(self.enemys)
 
                 if self.lives <= 0:
+                    self.rank.update(self.score, 'scoreRank.txt')
+                    self.drawScoreBorad()
                     print('You Lose')
                     run = False
 
@@ -236,37 +234,18 @@ class Game:
             # check if moving object
         pygame.quit()
 
-    def perp_bisector_dis(self, tower):
-        '''
-        return if you can place tower based on distance from path
-        :param tower:
-        :return: bool
-        '''
-        # find two closest points
-        closest = []
-        # for point in path:
-        #     dis = math.sqrt((tower.x - point[0])**2 + (tower.y - point[1])**2)
-        #     closest.append([dis, point])
-        #
-        # closest = closest.sort(key = lambda x: x[0])
-        # closest1 = closest[0][1]
-        # closest2 = closest[1][1]
-        #
-        # line_vector = (closest2[0] - closest1[0], closest2[1] - closest1[1])
-        # slope = line_vector[1] / line_vector[0]
-        # c = closest1[1] - closest1[0]*slope
-        # b = 1/slope
-        # c_left = -closest1[1] * b
-        # c_right = closest1[0]
-        # dis = abs(line_vector[0]*tower.x + line_vector[1]*tower.y + c)/math.sqrt(line_vector[0]**2 + line_vector[1]**2)
-
-        return True
+    def drawScoreBorad(self):
+        pass
 
     def draw(self):
         self.win.blit(self.bg, (0, 0))
+        # self.win.blit(bgs[self.bg_index], (0, 0))
+        # self.bg_index += 1
+        # if self.bg_index >= 15:
+        #     self.bg_index = 0
         # print('draw is over')
         # for p in self.clicks:
-          # pygame.draw.circle(self.win,(255,0,0),(p[0],p[1]),5,0)
+        #   pygame.draw.circle(self.win, (255, 0, 0), (p[0], p[1]), 5, 0)
         # draw attack towers
         if self.moving_object:
             for tower in self.towers:
