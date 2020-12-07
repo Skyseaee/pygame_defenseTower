@@ -5,7 +5,7 @@ from towers.Tower import Tower
 
 
 archer_imgs = []
-for x in range(1,7):
+for x in range(1, 7):
     add_str = x
     archer_imgs.append(pygame.image.load(r'../towers/tower01/01_' + str(add_str) + '.png'))
 
@@ -68,27 +68,12 @@ class ArcherTower(Tower):
             if dis < self.range and enemy.health > 0.5 and enemy.x <= 1080:
                 self.inRange = True
                 self.tower_enemy_closest.append(enemy)
-        # enemies = set(enemies)
-        # self.tower_enemy_closest.sort(key=lambda x: x.x)
+
         if len(self.tower_enemy_closest)>0:
             first_enemy = self.tower_enemy_closest[0]
-            # print(first_enemy.health)
-            # print(len(self.tower_enemy_closest))
             if first_enemy.health < 0:
                 self.tower_enemy_closest.clear()
-                # self.tower_enemy_closest.remove(first_enemy)
-                # del first_enemy
-            # print(len(self.tower_enemy_closest))
 
-
-            # for enemy in self.tower_enemy_closest:
-            #     if enemy.health <= 0:
-            #         index += 1
-            #         continue
-            #     else:
-            #         first_enemy = self.tower_enemy_closest[index]
-            # print(first_enemy == None)
-            # print(type(first_enemy))
             if first_enemy:
                 if time.time() - self.timer >= 0.5:
                     self.timer = time.time()
@@ -103,6 +88,7 @@ class ArcherTower(Tower):
                 for x, img in enumerate(self.archer_imgs):
                     if self.y <= first_enemy.y:
                         self.archer_imgs[x] = pygame.transform.flip(img, False, True)
+
                 if first_enemy != None and first_enemy.x > self.x and not self.left:
                     self.left = 1
 

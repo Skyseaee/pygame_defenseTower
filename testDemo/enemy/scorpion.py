@@ -13,6 +13,6 @@ class Scorpion(enemy.Enemy):
         super().__init__()
         self.name = 'scorpion'
         self.money = 100
-        self.max_health = 1
+        self.max_health = 3
         self.health = self.max_health
         self.imgs = imgs[:]
