@@ -3,9 +3,9 @@ import os
 from . import enemy
 
 imgs = []
-for x in range(9):
+for x in range(7):
     add_str = x
-    imgs.append(pygame.image.load(r'../enemys/ghost/sprite_' + str(add_str) + '.png'))
+    imgs.append(pygame.transform.scale(pygame.image.load(r'../enemies/jd/render000' + str(add_str) + '.png'), (1920//4, 1080//4)))
 
 class Scorpion(enemy.Enemy):
 
