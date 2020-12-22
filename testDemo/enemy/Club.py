@@ -2,11 +2,9 @@ import pygame
 from . import enemy
 
 imgs = []
-indexs = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09',
-          '10', '11', '12', '13', '14', '15', '16', '17', '18', '19']
-for index in indexs:
+for x in range(7):
     # add_str = x
-    imgs.append(pygame.image.load(r'../enemys/3/3_enemies_1_attack_0' + index + '.png'))
+    imgs.append(pygame.image.load(r'../enemies/tencent/render000' + str(x) + '.png'))
 
 class Club(enemy.Enemy):
     def __init__(self):
