@@ -12,6 +12,10 @@ from towers.supportTower import RangeTower
 from menu.menu import VerticalMenu, PlayPauseButton
 from menu.Rank import rank
 from menu.StartMenu import StartMenu
+import bs4
+import re
+import requests
+import math
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()  # sound effects
@@ -83,7 +87,13 @@ waves = [
 ]
 
 class Game:
-    def __init__(self):
+    def __init__(self,tencentprice,aliprice,jdprice,appleprice,googleprice,twitterprice):
+        self.tencentprice = tencentprice
+        self.aliprice = aliprice
+        self.jdprice = jdprice
+        self.appleprice = appleprice
+        self.googleprice = googleprice
+        self.twitterprice = twitterprice
         self.width = 1080
         self.height = 720
         self.win = pygame.display.set_mode((self.width, self.height))
@@ -102,10 +112,10 @@ class Game:
         self.timer = time.time()
         self.selected_tower = None
         self.menu = VerticalMenu(self.width, 0, verticalMenu)
-        self.menu.add_button(buy_archer, 'buy_archer', 500)
-        self.menu.add_button(buy_archer_2, 'buy_archer_2', 700)
-        self.menu.add_button(buy_damage, 'buy_damage', 1000)
-        self.menu.add_button(buy_range, 'buy_range', 1000)
+        self.menu.add_button(buy_archer, 'buy_archer', appleprice)
+        self.menu.add_button(buy_archer_2, 'buy_archer_2', googleprice)
+        self.menu.add_button(buy_damage, 'buy_damage', 0)
+        self.menu.add_button(buy_range, 'buy_range', twitterprice)
         # self.moving_object = False
         self.moving_object = None
         self.wave = 0
@@ -132,7 +142,7 @@ class Game:
                 self.playPauseButton.pause = self.pause
 
         else:
-            wave_enemies = [Scorpion(), Club(), TMall()]
+            wave_enemies = [Scorpion(self.jdprice,self.jdprice / 40), Club(self.tencentprice,self.tencentprice / 40), TMall(self.aliprice , self.aliprice / 40)]
             for x in range(len(self.current_wave)):
                 if self.current_wave[x] != 0:
                     self.enemys.append(wave_enemies[x])
@@ -218,7 +228,7 @@ class Game:
                             if self.selected_tower:
                                 btn_clicked = self.selected_tower.menu.get_click(pos[0], pos[1])
                                 if btn_clicked:
-                                    if btn_clicked == "upgrade_button":
+                                    if btn_clicked == "upgrade_button" and self.selected_tower.level<=2:
                                         if self.money >= self.selected_tower.menu.item_cost[self.selected_tower.level - 1]:
                                             self.money -= self.selected_tower.menu.item_cost[self.selected_tower.level - 1]
                                             self.selected_tower.upgrade()
@@ -393,7 +403,7 @@ class Game:
     def add_tower(self, name):
         x, y = pygame.mouse.get_pos()
         name_list = ['buy_archer', 'buy_archer_2', 'buy_damage', 'buy_range']
-        object_list = [ArcherTower(x, y), ArcherTowerShort(x, y), DamageTower(x, y), RangeTower(x, y)]
+        object_list = [ArcherTower(x, y, self.appleprice / 8 ,self.appleprice / 1500), ArcherTowerShort(x, y, self.googleprice / 12 ,self.googleprice / 1000), DamageTower(x, y), RangeTower(x, y ,self.twitterprice / 500)]
 
         try:
             obj = object_list[name_list.index(name)]
@@ -403,5 +413,22 @@ class Game:
         except Exception as e:
             print(str(e) + 'NOT VALID NAME')
 
-g = Game()
+headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.66',
+        }
+tencenturl = 'http://push2.eastmoney.com/api/qt/stock/get?secid=116.00700&fields=f18,f59,f51,f52,f57,f58,f106,f105,f62,f108,f177,f43,f46,f60,f44,f45,f47,f48,f49,f113,f114,f115,f85,f84,f169,f170,f161,f163,f164,f171,f126,f168,f162,f116,f55,f92,f71,f50,f167,f117,f86,f172,f174,f175'
+appleurl = 'http://push2.eastmoney.com/api/qt/stock/get?secid=105.AAPL&&fields=f43,f169,f170,f46,f60,f84,f116,f44,f45,f171,f126,f47,f48,f168,f164,f49,f161,f55,f92,f59,f152,f167,f50,f86,f71,f172'
+googleurl = 'http://push2.eastmoney.com/api/qt/stock/get?secid=105.GOOG&&fields=f43,f169,f170,f46,f60,f84,f116,f44,f45,f171,f126,f47,f48,f168,f164,f49,f161,f55,f92,f59,f152,f167,f50,f86,f71,f172'
+twitterurl = 'http://push2.eastmoney.com/api/qt/stock/get?secid=106.TWTR&&fields=f43,f169,f170,f46,f60,f84,f116,f44,f45,f171,f126,f47,f48,f168,f164,f49,f161,f55,f92,f59,f152,f167,f50,f86,f71,f172'
+aliurl = 'http://push2.eastmoney.com/api/qt/stock/get?secid=106.BABA&&fields=f43,f169,f170,f46,f60,f84,f116,f44,f45,f171,f126,f47,f48,f168,f164,f49,f161,f55,f92,f59,f152,f167,f50,f86,f71,f172'
+jdurl = 'http://push2.eastmoney.com/api/qt/stock/get?secid=105.JD&&fields=f43,f169,f170,f46,f60,f84,f116,f44,f45,f171,f126,f47,f48,f168,f164,f49,f161,f55,f92,f59,f152,f167,f50,f86,f71,f172'
+rateurl = 'https://www.baidu.com/s?wd=港元兑换美元'
+rate = float(re.findall("'1港元=(.*?)美元'",requests.get(rateurl,headers=headers).text)[0])
+tencentprice = int(math.log10(float(re.findall("\"f116\":(.*?),",requests.get(tencenturl,headers=headers).text)[0]) * rate / 100000000) * 30)
+aliprice = int(math.log10(float(re.findall("\"f116\":(.*?),",requests.get(aliurl,headers=headers).text)[0]) / 100000000) * 30)
+jdprice = int(math.log10(float(re.findall("\"f116\":(.*?),",requests.get(jdurl,headers=headers).text)[0] )/ 100000000) * 30)
+twitterprice = int(math.log10(float(re.findall("\"f116\":(.*?),",requests.get(twitterurl,headers=headers).text)[0]) / 100000000) * 400)
+googleprice = int(math.log10(float(re.findall("\"f116\":(.*?),",requests.get(googleurl,headers=headers).text)[0]) / 100000000) * 400)
+appleprice = int(math.log10(float(re.findall("\"f116\":(.*?),",requests.get(appleurl,headers=headers).text)[0]) / 100000000) * 400)
+g = Game(tencentprice,aliprice,jdprice,appleprice,googleprice,twitterprice)
 g.run()

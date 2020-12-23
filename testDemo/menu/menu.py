@@ -71,13 +71,14 @@ class Menu:
         self.width = menu_bg.get_width()
         self.height = menu_bg.get_height()
         self.component_names = []
-        self.item_cost = [2000, 5000, 7000, 'MAX']
+        self.item_cost = [1000, 3000, 'MAX']
         self.imgs = []
         self.buttons = []
         self.items = 0
         self.menu_bg = menu_bg
         self.font = pygame.font.Font(r'../Fonts/DIN-BlackItalicAlt.otf', 26)
         self.tower = tower
+
 
     def click(self, x, y):
         '''

@@ -106,10 +106,10 @@ class Tower:
         upgrade the tower by cost
         :return:
         '''
-        if self.level <= 3:
+        if self.level <= 2:
             self.level += 1
-            self.damage += 1
-            self.range += 50
+            self.damage += self.damage * 0.5
+            self.range += self.range * 0.25
             self.effected = True
         pass
 

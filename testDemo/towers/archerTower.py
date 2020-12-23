@@ -14,14 +14,14 @@ for index in indexs2:
                                                (1920//9, 1080//9)))
 
 class ArcherTower(Tower):
-    def __init__(self, x, y):
+    def __init__(self, x, y, range, damage):
         super().__init__(x, y)
         self.archer_imgs = archer_imgs1[:]
         self.archer_count = 0
-        self.range = 200
+        self.range = range
         self.original_range = self.range
         self.inRange = False
-        self.damage = 1
+        self.damage = damage
         self.left = -1
         self.timer = time.time()
         self.tower_enemy_closest = []
@@ -100,12 +100,12 @@ for index in indexs2:
 
 # draw another tower, which is the same as the first tower now
 class ArcherTowerShort(ArcherTower):
-    def __init__(self, x, y):
-        super().__init__(x, y)
+    def __init__(self, x, y, range, damage):
+        super().__init__(x, y,range, damage)
         self.archer_imgs = archer_imgs[:]
         self.archer_count = 0
-        self.range = 120
-        self.damage = 2
+        self.range = range
+        self.damage = damage
         self.original_damage = self.damage
         self.inRange = False
         self.left = -1

@@ -9,9 +9,9 @@ for index in indexs:
                                                (1920//9, 1080//9)))
 
 class RangeTower(Tower):
-    def __init__(self, x, y):
+    def __init__(self, x, y ,rate):
         super().__init__(x, y)
-        self.effect = [0.2, 0.4]
+        self.effect = [0.2 * rate, 0.5 * rate, 1.0 * rate]
         self.range = 200
         self.damage = 0
         self.original_range = self.range
@@ -92,10 +92,10 @@ class DamageTower(RangeTower):
     add damage to surrounding towers
     '''
     def __init__(self, x, y):
-        super().__init__(x, y)
+        super().__init__(x, y,1)
         self.range = 200
         self.archer_imgs = damage_imgs1[:]
-        self.effect = [0.5, 1]
+        self.effect = [0.5, 1, 2]
         self.name = 'damage'
         self.price = [2000]
         self.inRange = False

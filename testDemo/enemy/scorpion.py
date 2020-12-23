@@ -9,10 +9,10 @@ for x in range(7):
 
 class Scorpion(enemy.Enemy):
 
-    def __init__(self):
+    def __init__(self, money, health):
         super().__init__()
         self.name = 'scorpion'
-        self.money = 100
-        self.max_health = 3
+        self.money = money
+        self.max_health = health
         self.health = self.max_health
         self.imgs = imgs[:]
