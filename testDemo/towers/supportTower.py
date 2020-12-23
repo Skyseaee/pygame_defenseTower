@@ -11,7 +11,7 @@ for index in indexs:
 class RangeTower(Tower):
     def __init__(self, x, y ,rate):
         super().__init__(x, y)
-        self.effect = [0.2 * rate, 0.5 * rate, 1.0 * rate]
+        self.effect = [0.2 * rate, 0.4 * rate, 0.6 * rate]
         self.range = 200
         self.damage = 0
         self.original_range = self.range

@@ -142,7 +142,7 @@ class Game:
                 self.playPauseButton.pause = self.pause
 
         else:
-            wave_enemies = [Scorpion(self.jdprice,self.jdprice / 40), Club(self.tencentprice,self.tencentprice / 30), TMall(self.aliprice , self.aliprice / 20)]
+            wave_enemies = [Scorpion(self.jdprice,self.jdprice / 30), Club(self.tencentprice,self.tencentprice / 20), TMall(self.aliprice , self.aliprice / 10)]
             for x in range(len(self.current_wave)):
                 if self.current_wave[x] != 0:
                     self.enemys.append(wave_enemies[x])
@@ -403,7 +403,7 @@ class Game:
     def add_tower(self, name):
         x, y = pygame.mouse.get_pos()
         name_list = ['buy_archer', 'buy_archer_2', 'buy_damage', 'buy_range']
-        object_list = [ArcherTower(x, y, self.appleprice / 8 ,self.appleprice / 1500), ArcherTowerShort(x, y, self.googleprice / 12 ,self.googleprice / 1000), DamageTower(x, y), RangeTower(x, y ,self.twitterprice / 500)]
+        object_list = [ArcherTower(x, y, self.appleprice / 8 ,self.appleprice / 1500), ArcherTowerShort(x, y, self.googleprice / 12 ,self.googleprice / 1000), DamageTower(x, y), RangeTower(x, y ,self.twitterprice / 1000)]
 
         try:
             obj = object_list[name_list.index(name)]
