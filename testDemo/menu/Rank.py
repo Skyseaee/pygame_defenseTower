@@ -1,17 +1,15 @@
 class rank:
-    def __init__(self):
-        self.scores = [0, 0, 0, 0, 0]
-
+    scores = []
     def getScores(self, filename):
         try:
             fp = open(filename, "r")
             for line in fp.readlines():
-                rank.scores.append(float(line))
+                rank.scores.append(int(line))
             fp.close()
             if(len(rank.scores) == 0):
-                rank.scores = [0, 0, 0, 0, 0]
+                rank.scores = [0, 0, 0]
         except IOError:
-            rank.scores = [0, 0, 0, 0, 0]
+            rank.scores = [0, 0, 0]
 
     def update(self, newscore, filename):
         for score in self.scores:
@@ -19,8 +17,8 @@ class rank:
                 self.scores.insert(self.scores.index(score), newscore)
                 self.scores.pop()
                 fp = open(filename, "w")
-                for score in self.scores:
-                    fp.write(str(score))
+                for scr in self.scores:
+                    fp.write(str(scr))
                     fp.write("\n")
                 break
 

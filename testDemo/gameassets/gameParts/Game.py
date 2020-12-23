@@ -140,6 +140,7 @@ class Game:
                     break
 
     def run(self):
+        self.rank.getScores('scoreRank.txt')
         run = True
         clock = pygame.time.Clock()
         while run:
@@ -307,11 +308,7 @@ class Game:
         self.win.blit(self.bg, (0, 0))
         self.StartMenu.draw(self.win)
         # generate score list
-        fp = open('scoreRank.txt', "r")
-        for index in range(3):
-            data = fp.readline()
-            data = data.strip('\n')
-            self.score_list.append(data)
+        self.score_list = self.rank.scores
         self.StartMenu.draw_score_list(self.win, self.score_list, self.score)
         # pygame.draw.rect(self.win, (255, 255, 255), (350, 280, 450, 80), 1)
         pygame.display.update()
