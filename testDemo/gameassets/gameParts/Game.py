@@ -142,7 +142,7 @@ class Game:
                 self.playPauseButton.pause = self.pause
 
         else:
-            wave_enemies = [Scorpion(self.jdprice,self.jdprice / 30), Club(self.tencentprice,self.tencentprice / 20), TMall(self.aliprice , self.aliprice / 10)]
+            wave_enemies = [Scorpion(self.jdprice,self.jdprice / 20), Club(self.tencentprice,self.tencentprice / 10), TMall(self.aliprice , self.aliprice / 5)]
             for x in range(len(self.current_wave)):
                 if self.current_wave[x] != 0:
                     self.enemys.append(wave_enemies[x])
