@@ -25,5 +25,8 @@
 修复部分已知bug，优化游戏性能
 
 ## Contributors
-
+[C-Octopus](https://github.com/C-Octopus)
+[callumyang](https://github.com/callumyang)
+[Mingyingjie](https://github.com/Mingyingjie)
 ## License
+[MIT](License) 
