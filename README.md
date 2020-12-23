@@ -10,7 +10,7 @@
 
 ## 游戏界面呈现
 
-| <img src="E:\Learning Materials\Peking\FirstSemester\Python程序设计\大作业\文档\自定义大小 – 1.jpg" style="zoom:45%;" /> | <img src="E:\Learning Materials\Peking\FirstSemester\Python程序设计\大作业\文档\自定义大小 – 2.jpg" style="zoom:45%;" /> |
+| <img src="https://github.com/Skyseaee/pygame_defenseTower/blob/main/首页.jpg" style="zoom:45%;" /> | <img src="https://github.com/Skyseaee/pygame_defenseTower/blob/main/开始页.jpg" style="zoom:45%;" /> |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                           首页图片                           |                         游戏界面图片                         |
 
