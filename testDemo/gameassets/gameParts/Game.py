@@ -403,7 +403,7 @@ class Game:
     def add_tower(self, name):
         x, y = pygame.mouse.get_pos()
         name_list = ['buy_archer', 'buy_archer_2', 'buy_damage', 'buy_range']
-        object_list = [ArcherTower(x, y, self.appleprice / 8 ,self.appleprice / 5000), ArcherTowerShort(x, y, self.googleprice / 12 ,self.googleprice / 3000), DamageTower(x, y), RangeTower(x, y ,self.twitterprice / 1000)]
+        object_list = [ArcherTower(x, y, self.appleprice / 8 ,self.appleprice / 1500), ArcherTowerShort(x, y, self.googleprice / 12 ,self.googleprice / 1000), DamageTower(x, y), RangeTower(x, y ,self.twitterprice / 1000)]
 
         try:
             obj = object_list[name_list.index(name)]
